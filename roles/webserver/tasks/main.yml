@@ -21,3 +21,15 @@
     name: httpd
     state: started
     enabled: true
+
+- name: Install PHP
+  yum:
+    name: php
+    state: present
+    update_cache: no
+
+- name: Deploy phpinfo.php #copy this file into the webserver's dir to test that both the webserver and PHP are working correctly.
+  copy:
+    src: phpinfo.php
+    dest: "{{ apache_document_root_directory }}/phpinfo.php"
+  notify: Restart Apache #PS: This whole task can be combined with the Install apache task, to avoid restarting twice, but honestly I'm too lazy now to do it. you get the point though.
