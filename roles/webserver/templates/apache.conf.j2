@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    ServerName {{ apache_server_name }}
+    DocumentRoot {{ apache_document_root_directory }}
+
+    <Directory {{ apache_document_root_directory }}>
+        AllowOverride All
+        Options Indexes FollowSymLinks
+        Require all granted
+    </Directory>
+</VirtualHost>
+

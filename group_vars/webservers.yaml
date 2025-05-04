@@ -1,0 +1,5 @@
+apache_document_root_directory: /var/www/html #the root dir for apache on rhel
+apache_server_name: webserver.local
+allowed_ips: #list of the allowed ip. Take care of the name of the variable here. It will be used later in apache.conf.j2
+  - 192.168.174.147
+  - 192.168.174.148

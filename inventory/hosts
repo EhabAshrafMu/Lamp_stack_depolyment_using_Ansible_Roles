@@ -1,0 +1,10 @@
+[all:vars]
+ansible_connect=ssh
+ansible_private_key_file=~/.ssh/id_rsa
+
+
+[webservers]
+webserver01	ansible_host=192.168.174.146	ansible_user=ansibleclient1
+
+[dbservers]
+dbserver01	ansible_host=192.168.174.147	ansible_user=ansibleclient2

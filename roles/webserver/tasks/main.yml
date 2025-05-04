@@ -1,0 +1,23 @@
+---
+# tasks file for roles/webserver
+
+- name: Install Apache # installing apache using the builtin module of ansible. Yum because we are in a rhel environment. Apt for debian.
+  yum:
+    name: httpd # the name of the apache server in rhel. for debian it's apache2
+    state: present # it means if it's available on the server, don't install. If it's not available, it will install the latest.
+    update_cache: yes # update the repo cache
+
+- name: Deploy Apache config template # use the jinja2 template to write the configuration file for apache
+  template:
+    src: apache.conf.j2 # the configuration will be written in this file in the same directory we are standing.
+    dest: /etc/httpd/conf.d/ # the path that it will be copied to. This is the path for apache configuration
+    mode: '0644' # give the owner read and write perms. group and others readonly.
+    owner: root # make sure the owner of the file is root and the group is root
+    group: root
+  notify: Restart Apache # after doing the above commands, restart the apache server. It will be referred to later.
+
+- name: Start and enable Apache # use the service module to start and enable the apache server
+  service:
+    name: httpd
+    state: started
+    enabled: true
