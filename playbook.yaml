@@ -1,5 +1,13 @@
 - name: Deploy the apache server
   hosts: webservers
+  gather_facts: yes
   become: yes
   roles:
     - webserver
+
+- name: Deploy the MYSQL server
+  hosts: dbservers
+  gather_facts: yes
+  become: yes
+  roles:
+    - dbserver

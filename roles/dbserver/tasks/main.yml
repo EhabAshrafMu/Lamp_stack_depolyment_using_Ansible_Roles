@@ -1,0 +1,39 @@
+---
+# tasks file for roles/dbserver
+
+- name: Install python MYSQL packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - PyMySQL
+    - mysql-connector-python
+
+- name: Install MYSQL
+  yum:
+    name: mysql-server
+    state: present
+
+- name: start MYSQL
+  service:
+     name: mysqld
+     state: started
+     enabled: true
+
+- name: Check if .my.cnf file exists
+  stat:
+    path: ~/.my.cnf
+  register: credentials
+    
+- name: Set MySQL root password
+  shell: |
+    mysql -u root --password={{ mysql_root_password }} -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ mysql_root_password }}'; FLUSH PRIVILEGES;"
+  when: not credentials.stat.exists
+
+- name: Deploy MYSQL credentials file
+  template:
+    src: mysql.cnf.j2
+    dest: ~/.my.cnf
+    mode: "0600"
+
+
